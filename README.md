@@ -1,1 +1,2 @@
 aipython
+这是我使用chatgpt辅助写出来的代码。
