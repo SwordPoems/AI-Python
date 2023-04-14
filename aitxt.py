@@ -1,8 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 import os
-
-# ¶¨Òåº¯ÊıÊµÏÖÍøÒ³ÇëÇó£¬»ñÈ¡Ğ¡ËµÒ³ÃæÄÚÈİ
+# https://read.qidian.com/chapter/cgdLbGBrMI46Q5WO_IQttQ2/JQgD55XMYMO2uJcMpdsVgA2/å¯¹è¿™ä¸ªç½‘å€ä½¿ç”¨pythonå†™ä¸€ä¸ªç½‘æ–‡çˆ¬è™«ï¼Œçˆ¬å–å°è¯´æ ‡é¢˜å’Œå†…å®¹ï¼Œå¹¶åœ¨ä»£ç è¿è¡Œå®Œä¹‹åè‡ªåŠ¨æ‰“å¼€å­˜å‚¨çš„æ–‡ä»¶
+# å®šä¹‰å‡½æ•°å®ç°ç½‘é¡µè¯·æ±‚ï¼Œè·å–å°è¯´é¡µé¢å†…å®¹
 def get_html(url):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
@@ -12,29 +12,29 @@ def get_html(url):
         html = response.text
         return html
     except:
-        print('ÍøÂçÇëÇó´íÎó£¡')
+        print('ç½‘ç»œè¯·æ±‚é”™è¯¯ï¼')
 
-# ¶¨Òåº¯Êı½âÎöĞ¡ËµÄÚÈİºÍ±£´æĞ¡Ëµ
+# å®šä¹‰å‡½æ•°è§£æå°è¯´å†…å®¹å’Œä¿å­˜å°è¯´
 def parse_content(html, filepath):
     soup = BeautifulSoup(html, 'html.parser')
-    # »ñÈ¡Ğ¡Ëµ±êÌâ
+    # è·å–å°è¯´æ ‡é¢˜
     title = soup.h1.text.strip()
-    # »ñÈ¡Ğ¡ËµÄÚÈİ
+    # è·å–å°è¯´å†…å®¹
     content_elem = soup.select('.read-content.j_readContent')[0]
     content = content_elem.get_text().strip()
-    # ±£´æĞ¡Ëµµ½ÎÄ¼şÖĞ
+    # ä¿å­˜å°è¯´åˆ°æ–‡ä»¶ä¸­
     with open(filepath, 'w', encoding='utf-8') as f:
         f.write(title)
         f.write('\n\n')
         f.write(content)
-    print('Ğ¡Ëµ±£´æ³É¹¦£¡')
+    print('å°è¯´ä¿å­˜æˆåŠŸï¼')
 
 
 if __name__ == '__main__':
     url = 'https://read.qidian.com/chapter/cgdLbGBrMI46Q5WO_IQttQ2/JQgD55XMYMO2uJcMpdsVgA2/'
     html = get_html(url)
-    # ¶¨Òå´æ´¢ÎÄ¼şÂ·¾¶
+    # å®šä¹‰å­˜å‚¨æ–‡ä»¶è·¯å¾„
     filepath = os.path.join(os.path.abspath('.'), 'novel.txt')
     parse_content(html, filepath)
-    # ´ò¿ª´æ´¢µÄĞ¡ËµÎÄ¼ş
+    # æ‰“å¼€å­˜å‚¨çš„å°è¯´æ–‡ä»¶
     os.startfile(filepath)
