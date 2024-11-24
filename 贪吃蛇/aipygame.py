@@ -42,16 +42,17 @@ def main():
                 pygame.quit()
                 sys.exit()
 
-        # 处理键盘按键
+            # 处理键盘按键
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT]:
+        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
             snake_direction = [-BLOCK_SIZE, 0]
-        elif keys[pygame.K_RIGHT]:
+        elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             snake_direction = [BLOCK_SIZE, 0]
-        elif keys[pygame.K_UP]:
+        elif keys[pygame.K_UP] or keys[pygame.K_w]:
             snake_direction = [0, -BLOCK_SIZE]
-        elif keys[pygame.K_DOWN]:
+        elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
             snake_direction = [0, BLOCK_SIZE]
+            
 
         # 移动蛇
         snake_pos.insert(0, [snake_pos[0][0]+snake_direction[0],
