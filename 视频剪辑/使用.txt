@@ -1,3 +1,11 @@
+# 克隆funclip仓库
+git clone https://github.com/alibaba-damo-academy/FunClip.git
+cd FunClip
+# 安装相关Python依赖
+pip install -r ./requirements.txt
+
+
+
 python funclip/launch.py
 # '-l en' for English audio recognize
 # '-p xxx' for setting port number
