@@ -6,7 +6,7 @@ import seaborn as sns
 from wordcloud import WordCloud
 
 # 加载数据
-file_path = 'C:\\Users\\Nymphet\\Desktop\\数据分析\\MathEdataset.csv'  # 替换为你的CSV文件路径
+file_path = 'C:\\Users\\Nymphet\\Desktop\\大数据分析\\MathEdataset.csv'  # 替换为你的CSV文件路径
 
 # 检测文件编码
 with open(file_path, 'rb') as f:
@@ -90,4 +90,42 @@ plt.title('Distribution of Answers by Question Level')
 plt.xlabel('Question Level')
 plt.ylabel('Count')
 plt.legend(title='Answer Type')
+plt.show()
+
+
+
+
+# 转换Type of Answer为二进制值
+df['Type of Answer'] = df['Type of Answer'].map({0: 'Incorrect', 1: 'Correct'})
+
+# 计算每个问题ID和主题的正确回答率
+correct_rate_by_question_id_and_topic = df.groupby(['Question ID', 'Topic'])['Type of Answer'].apply(
+    lambda x: (x == 'Correct').mean()
+).reset_index()
+
+# 获取所有独特的数学主题
+topics = df['Topic'].unique()
+
+# 创建一个图表
+plt.figure(figsize=(14, 7))
+
+# 对于每个主题，绘制正确回答率随问题ID的变化趋势
+for topic in topics:
+    topic_data = correct_rate_by_question_id_and_topic[correct_rate_by_question_id_and_topic['Topic'] == topic]
+    
+    # 绘制该主题的线状图
+    plt.plot(topic_data['Question ID'], topic_data['Type of Answer'], marker='', label=topic)
+
+# 设置图表标题和标签
+plt.title('Comparison of Correct Answer Rates Over Question IDs by Topic')
+plt.xlabel('Question ID')
+plt.ylabel('Average Correct Rate')
+
+# 显示图例
+plt.legend(title='Math Topics')
+
+# 显示网格
+plt.grid(True)
+
+# 显示图表
 plt.show()

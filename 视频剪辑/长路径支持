@@ -1,0 +1,83 @@
+pip install -r requirements.txt
+一键添加依赖
+
+
+
+你遇到的错误 `[Errno 2] No such file or directory` 通常是因为文件路径超过了 Windows 的默认最大路径长度限制（260 个字符）。Windows 对文件路径长度有一个限制，这可能会导致在安装某些 Python 包时出现问题，特别是当包中有较长的文件路径时。
+
+### 解决方案
+
+#### 1. **启用 Windows 长路径支持**
+
+Windows 10 和 Windows 11 支持长路径（超过 260 个字符），但需要手动启用。你可以按照以下步骤启用长路径支持：
+
+1. **通过组策略编辑器启用**：
+   - 按 `Win + R` 打开“运行”对话框。
+   - 输入 `gpedit.msc` 并按回车，打开“本地组策略编辑器”。
+   - 导航到 `计算机配置 -> 管理模板 -> 系统 -> 文件系统`。
+   - 找到并双击 `启用 Win32 长路径`。
+   - 选择 `已启用`，然后点击 `应用` 和 `确定`。
+
+2. **通过注册表编辑器启用**：
+   - 按 `Win + R` 打开“运行”对话框。
+   - 输入 `regedit` 并按回车，打开“注册表编辑器”。
+   - 导航到 `HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem`。
+   - 找到或创建一个名为 `LongPathsEnabled` 的 DWORD 值。
+   - 将其值设置为 `1`，然后关闭注册表编辑器。
+
+3. **通过修改系统属性启用**：
+   - 右键点击“此电脑”或“我的电脑”，选择“属性”。
+   - 点击“高级系统设置”。
+   - 在“系统属性”窗口中，点击“高级”选项卡下的“环境变量”。
+   - 在“系统变量”部分，点击“新建”，添加一个新的系统变量：
+     - 变量名：`_NTFSDisablePathLengthLimit`
+     - 变量值：`1`
+
+4. **通过 PowerShell 启用**：
+   - 打开 PowerShell（以管理员身份）。
+   - 运行以下命令：
+     ```powershell
+     New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" -Name "LongPathsEnabled" -Value 1 -PropertyType DWORD -Force
+     ```
+
+#### 2. **重启系统**
+
+完成上述操作后，建议重启你的计算机，以确保更改生效。
+
+#### 3. **检查 Python 安装路径**
+
+如果你使用的是 Windows Store 版本的 Python（如 `PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0`），它可能位于一个非常深的路径中，容易超出路径长度限制。建议你卸载 Windows Store 版本的 Python，并从 [Python 官方网站](https://www.python.org/downloads/) 下载并安装标准版的 Python。安装时，确保勾选“Add Python to PATH”选项。
+
+#### 4. **调整 pip 缓存目录**
+
+如果你不想更改系统的长路径设置，可以尝试调整 `pip` 的缓存目录，将其移动到一个路径较短的位置。你可以通过设置 `PIP_CACHE_DIR` 环境变量来实现这一点：
+
+1. 打开“环境变量”设置（同上）。
+2. 在“用户变量”或“系统变量”部分，点击“新建”。
+3. 添加一个新的环境变量：
+   - 变量名：`PIP_CACHE_DIR`
+   - 变量值：选择一个路径较短的目录，例如 `C:\pip-cache`
+
+#### 5. **清理 pip 缓存**
+
+有时候，`pip` 的缓存可能会导致问题。你可以尝试清理缓存后再重新安装依赖项：
+
+```bash
+pip cache purge
+```
+
+#### 6. **使用虚拟环境**
+
+如果你还没有使用虚拟环境，建议创建一个虚拟环境来隔离项目的依赖项。虚拟环境通常会创建在项目目录下，路径较短，可以避免路径过长的问题。
+
+```bash
+python -m venv myenv
+myenv\Scripts\activate
+pip install -r requirements.txt
+```
+
+### 总结
+
+最直接的解决方案是**启用 Windows 长路径支持**，这是 Windows 10 和 11 提供的功能，专门用于解决路径过长的问题。如果你无法启用长路径支持，或者希望避免这个问题，可以考虑调整 Python 安装路径、清理缓存或使用虚拟环境。
+
+如果你仍然遇到问题，请提供更多的错误信息，我会继续帮助你解决问题。希望这些方法能帮到你！ 😊

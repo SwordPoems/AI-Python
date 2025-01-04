@@ -1,0 +1,65 @@
+python funclip/launch.py
+# '-l en' for English audio recognize
+# '-p xxx' for setting port number
+# '-s True' for establishing service for public accessing
+
+
+字幕：
+C:\Users\Nymphet\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages
+在其中的site-packages\moviepy\config_defaults.py文件中修改IMAGEMAGICK_BINARY为imagemagick的exe路径
+
+下载你需要的字体文件，这里我们提供一个默认的黑体字体文件
+wget https://isv-data.oss-cn-hangzhou.aliyuncs.com/ics/MaaS/ClipVideo/STHeitiMedium.ttc -O font/STHeitiMedium.ttc
+
+
+看起来`moviepy`库已经成功安装，但是你的代码仍然无法找到`moviepy.editor`。这可能是因为`moviepy`的版本问题或者是Python环境的问题。
+
+根据你提供的pip安装输出，`moviepy`版本为2.1.1。在某些`moviepy`版本中，模块结构可能会发生变化，导致`moviepy.editor`不再可用。例如，在较新的`moviepy`版本中，直接从`moviepy.editor`导入所有内容的方式已经被弃用。
+
+你可以尝试以下几种解决方案：
+
+### 1. 直接从 `moviepy` 导入
+
+修改你的代码，不要使用`from moviepy.editor import *`，而是具体地导入你需要使用的类或函数。例如：
+
+```python
+from moviepy.video.io.VideoFileClip import VideoFileClip
+# 或者如果你需要其他特定的功能
+from moviepy.editor import concatenate_videoclips, TextClip, CompositeVideoClip
+```
+
+### 2. 检查 `moviepy` 版本(成功)
+
+确认你安装的`moviepy`版本是否是最新的，并且与你的项目兼容。有时候，特定功能只在某些版本中可用。如果有必要，可以尝试安装一个更早的稳定版本，比如1.0.3，这个版本通常比较稳定，并且广泛使用`moviepy.editor`的方式：
+
+```bash
+pip install moviepy==1.0.3
+```
+
+### 3. 虚拟环境检查
+
+再次确保你在正确的环境中工作。如果你使用的是虚拟环境，请激活它之后再尝试运行你的脚本。如果你不确定当前的环境，可以通过下面的命令来查看当前的环境路径：
+
+```bash
+which python  # 在Linux/MacOS上
+where python  # 在Windows上
+```
+
+### 4. 环境变量和路径
+
+确保你的Python环境变量设置正确，这样Python解释器能够找到已安装的包。如果你是在Windows上使用默认的Python安装，通常不需要手动设置这些环境变量，但如果你有多个Python版本或者使用了虚拟环境，那么确保环境变量指向了你想要使用的那个Python解释器。
+
+### 5. 清理缓存
+
+有时候pip的缓存可能会导致问题。你可以尝试清理pip的缓存并重新安装`moviepy`：
+
+```bash
+pip cache purge
+pip install --no-cache-dir moviepy
+```
+
+### 6. 检查 `launch.py` 和 `videoclipper.py` 的编码
+
+确保你的`launch.py`和`videoclipper.py`文件是以UTF-8编码保存的。非UTF-8编码可能会导致一些奇怪的错误，尽管这种情况较少见。
+
+请尝试上述建议之一，并告诉我结果。如果问题依旧存在，我们可以进一步探讨其他可能的解决方案。
